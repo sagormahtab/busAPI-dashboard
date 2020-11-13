@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { fetchUtils, Admin, Resource } from "react-admin";
+import jsonServerProvider from "ra-data-json-server";
+import TourList from "./components/TourList";
+import TourEdit from "./components/TourEdit";
+import TourCreate from "./components/TourCreate";
+import authProvider from "./components/authProvider";
+import Dashboard from "./components/Dashboard";
+import LoginPage from "./components/LoginPage";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const httpClient = (url, options = {}) => {
+  if (!options.headers) {
+    options.headers = new Headers({ Accept: "application/json" });
+  }
+  const { token } = JSON.parse(localStorage.getItem("auth"));
+  options.headers.set("Authorization", `Bearer ${token}`);
+  return fetchUtils.fetchJson(url, options);
+};
 
+const dataProvider = jsonServerProvider(
+  "http://localhost:4200/api/v1",
+  httpClient
+);
+const App = () => (
+  <Admin
+    loginPage={LoginPage}
+    dataProvider={dataProvider}
+    authProvider={authProvider}
+    dashboard={Dashboard}
+  >
+    <Resource
+      name="buses"
+      list={TourList}
+      edit={TourEdit}
+      create={TourCreate}
+    />
+  </Admin>
+);
 export default App;
