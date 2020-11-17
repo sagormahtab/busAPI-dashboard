@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { useLogin, useNotify, Notification, defaultTheme } from "react-admin";
+import { useNotify, Notification, defaultTheme } from "react-admin";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import {
@@ -13,19 +13,52 @@ import {
   Box,
   TextField,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
-const LoginPage = ({ theme }) => {
+const SignupPage = ({ theme }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [role, setRole] = useState("");
-  const login = useLogin();
+  const history = useHistory();
+
+  // const [role, setRole] = useState("");
+  // const login = useLogin();
   const notify = useNotify();
   const submit = (e) => {
     e.preventDefault();
-    login({ email, password }).catch(() => notify("Invalid email or password"));
+    if (password !== passwordConfirm) {
+      return alert("Password didn't match");
+    }
+    fetch("http://localhost:4200/api/v1/users/signup", {
+      method: "POST",
+      body: JSON.stringify({ name, email, password, passwordConfirm }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((res) => {
+        if (res.status < 200 || res.status >= 300) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        notify("Successfully signed up. Log in to continue");
+        clearForm();
+        history.push("/login");
+      })
+      .catch((err) => {
+        alert("Error Occured");
+      });
+    // login({ email, password }).catch(() => notify("Invalid email or password"));
+  };
+
+  const clearForm = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPasswordConfirm("");
   };
 
   return (
@@ -59,7 +92,6 @@ const LoginPage = ({ theme }) => {
                       <div>
                         <TextField
                           required
-                          autoFocus
                           type="email"
                           label="Email"
                           name="email"
@@ -77,6 +109,7 @@ const LoginPage = ({ theme }) => {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           style={{ width: "100%" }}
+                          helperText="Minimum 4 characters"
                         />
                       </div>
                       <div>
@@ -90,7 +123,6 @@ const LoginPage = ({ theme }) => {
                           style={{ width: "100%" }}
                         />
                       </div>
-
                       <Button
                         variant="contained"
                         color="primary"
@@ -125,4 +157,4 @@ const LoginPage = ({ theme }) => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

@@ -3,6 +3,7 @@ import {
   List,
   Datagrid,
   TextField,
+  DateField,
   BooleanField,
   NumberField,
   EditButton,
@@ -14,8 +15,16 @@ const TourList = (props) => {
     <List {...props}>
       <Datagrid rowClick="edit">
         <BooleanField source="AC" />
-        <TextField source="depTime" />
-        <TextField source="arrTime" />
+        <DateField
+          showTime
+          options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
+          source="depTime"
+        />
+        <DateField
+          showTime
+          options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
+          source="arrTime"
+        />
         <NumberField source="seat" />
         <TextField source="name" />
         <TextField source="model" />

@@ -95,7 +95,9 @@ const LoginPage = ({ theme }) => {
                         marginTop: "0.3rem",
                       }}
                     >
-                      <small>New comer?</small>
+                      <Link to="/find-account">
+                        <small>Forgot Passwod?</small>
+                      </Link>
                       <Link to="/signup">
                         <small>Signup</small>
                       </Link>
