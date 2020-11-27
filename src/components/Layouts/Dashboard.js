@@ -5,7 +5,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import { Title } from "react-admin";
 
 const Dashboard = () => (
-  <Card>
+  <Card style={{ marginTop: "2rem" }}>
     <Title title="Dashboard" />
     <CardHeader title="Welcome to the administration" />
     <CardContent>Lorem ipsum sic dolor amet...</CardContent>

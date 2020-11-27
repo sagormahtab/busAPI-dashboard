@@ -8,12 +8,13 @@ import {
   NumberField,
   EditButton,
   DeleteButton,
+  ShowButton,
 } from "react-admin";
 
 const TourList = (props) => {
   return (
     <List {...props}>
-      <Datagrid rowClick="edit">
+      <Datagrid rowClick="show">
         <BooleanField source="AC" />
         <DateField
           showTime
@@ -32,6 +33,7 @@ const TourList = (props) => {
         <TextField source="to" />
         <NumberField source="fare" />
         <TextField source="id" />
+        <ShowButton />
         <EditButton source="/buses" />
         <DeleteButton source="/buses" />
       </Datagrid>

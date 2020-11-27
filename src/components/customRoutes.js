@@ -4,6 +4,7 @@ import EditProfile from "./Layouts/EditProfile";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ResetPassword from "./Auth/ResetPassword";
 import SignupPage from "./Auth/SignupPage";
+import Dashboard from "./Layouts/Dashboard";
 
 const routes = [
   <Route exact path="/signup" component={SignupPage} noLayout />,
@@ -15,6 +16,7 @@ const routes = [
     component={ResetPassword}
     noLayout
   />,
+  <Route exact path="/dashboard" component={Dashboard} />,
 ];
 
 export default routes;

@@ -1,10 +1,10 @@
-import { fetchUtils, Admin, Resource } from "react-admin";
+import { fetchUtils, Admin, Resource, ListGuesser } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 import TourList from "./components/Tours/TourList";
+import TourShow from "./components/Tours/TourShow";
 import TourEdit from "./components/Tours/TourEdit";
 import TourCreate from "./components/Tours/TourCreate";
 import authProvider from "./components/Auth/authProvider";
-import Dashboard from "./components/Layouts/Dashboard";
 import LoginPage from "./components/Layouts/LoginPage";
 import customRoutes from "./components/customRoutes";
 import LayoutComponent from "./components/Layouts/LayoutComponent";
@@ -12,8 +12,10 @@ import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
 import UserList from "./components/Users/UserList";
 import UserEdit from "./components/Users/UserEdit";
+import BookingList from "./components/Bookings/BookingList";
 // import dataProvider from "./components/dataProvider";
 import { People, DirectionsBus } from "@material-ui/icons";
+import Dashboard from "./components/Layouts/Dashboard";
 
 const messages = {
   en: englishMessages,
@@ -41,9 +43,9 @@ const App = () => {
     <>
       <Admin
         loginPage={LoginPage}
+        dashboard={Dashboard}
         dataProvider={dataProvider}
         authProvider={authProvider}
-        dashboard={Dashboard}
         customRoutes={customRoutes}
         layout={LayoutComponent}
         locale="en"
@@ -51,12 +53,15 @@ const App = () => {
       >
         <Resource
           name="buses"
+          show={TourShow}
           list={TourList}
           edit={TourEdit}
           create={TourCreate}
           icon={DirectionsBus}
         />
         <Resource name="users" list={UserList} edit={UserEdit} icon={People} />
+        <Resource name="bookings" list={BookingList} />
+        <Resource name="buses/bus-seats" list={ListGuesser} />
       </Admin>
     </>
   );
