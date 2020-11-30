@@ -9,11 +9,20 @@ import {
   EditButton,
   DeleteButton,
   ShowButton,
+  Filter,
+  TextInput,
 } from "react-admin";
+
+const BusFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="Search" source="q" alwaysOn />
+    <TextInput label="Name" source="name" defaultValue="" />
+  </Filter>
+);
 
 const TourList = (props) => {
   return (
-    <List {...props}>
+    <List {...props} filters={<BusFilter />}>
       <Datagrid rowClick="show">
         <BooleanField source="AC" />
         <DateField

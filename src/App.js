@@ -1,5 +1,4 @@
-import { fetchUtils, Admin, Resource, ListGuesser } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
+import { Admin, Resource } from "react-admin";
 import TourList from "./components/Tours/TourList";
 import TourShow from "./components/Tours/TourShow";
 import TourEdit from "./components/Tours/TourEdit";
@@ -14,8 +13,14 @@ import UserList from "./components/Users/UserList";
 import UserEdit from "./components/Users/UserEdit";
 import BookingList from "./components/Bookings/BookingList";
 // import dataProvider from "./components/dataProvider";
-import { People, DirectionsBus } from "@material-ui/icons";
+import { People, DirectionsBus, CheckCircle } from "@material-ui/icons";
 import Dashboard from "./components/Layouts/Dashboard";
+import extendedDataProvider from "./components/extendedDataProvider";
+import AvailabilityList from "./components/Availability/AvailabilityList";
+import AvailabilityShow from "./components/Availability/AvailabilityShow";
+import BookingShow from "./components/Bookings/BookingShow";
+import BookingEdit from "./components/Bookings/BookingEdit";
+import BookingCreate from "./components/Bookings/BookingCreate";
 
 const messages = {
   en: englishMessages,
@@ -25,26 +30,13 @@ const i18nProvider = polyglotI18nProvider((locale) => messages[locale], "en", {
   allowMissing: true,
 });
 
-const httpClient = (url, options = {}) => {
-  if (!options.headers) {
-    options.headers = new Headers({ Accept: "application/json" });
-  }
-  const { token } = JSON.parse(localStorage.getItem("auth"));
-  options.headers.set("Authorization", `Bearer ${token}`);
-  return fetchUtils.fetchJson(url, options);
-};
-
-const dataProvider = jsonServerProvider(
-  "http://localhost:4200/api/v1",
-  httpClient
-);
 const App = () => {
   return (
     <>
       <Admin
         loginPage={LoginPage}
         dashboard={Dashboard}
-        dataProvider={dataProvider}
+        dataProvider={extendedDataProvider}
         authProvider={authProvider}
         customRoutes={customRoutes}
         layout={LayoutComponent}
@@ -60,8 +52,20 @@ const App = () => {
           icon={DirectionsBus}
         />
         <Resource name="users" list={UserList} edit={UserEdit} icon={People} />
-        <Resource name="bookings" list={BookingList} />
-        <Resource name="buses/bus-seats" list={ListGuesser} />
+        <Resource
+          name="bookings"
+          list={BookingList}
+          show={BookingShow}
+          edit={BookingEdit}
+          create={BookingCreate}
+        />
+        <Resource
+          name="availability"
+          options={{ label: "Availability" }}
+          list={AvailabilityList}
+          show={AvailabilityShow}
+          icon={CheckCircle}
+        />
       </Admin>
     </>
   );
