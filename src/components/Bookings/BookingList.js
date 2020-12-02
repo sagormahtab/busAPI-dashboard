@@ -7,15 +7,30 @@ import {
   ReferenceField,
   EmailField,
   NumberField,
+  Filter,
+  TextInput,
   EditButton,
   DeleteButton,
   ShowButton,
 } from "react-admin";
 
+const BookingFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="Search" source="q" alwaysOn />
+    <TextInput label="Name" source="name" defaultValue="" />
+    <TextInput label="Email" source="email" defaultValue="" />
+  </Filter>
+);
+
 const BookingList = (props) => {
   return (
-    <List {...props}>
+    <List
+      {...props}
+      filters={<BookingFilter />}
+      sort={{ field: "createdAt", order: "DESC" }}
+    >
       <Datagrid>
+        <DateField source="createdAt" />
         <ReferenceField source="bus" reference="buses">
           <TextField source="name" />
         </ReferenceField>

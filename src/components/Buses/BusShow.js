@@ -68,7 +68,7 @@ EndingPointsField.defaultProps = {
   addLabel: true,
 };
 
-const TourShow = (props) => (
+const BusShow = (props) => (
   <Show
     title={<BusTitle />}
     actions={<BusShowActions />}
@@ -104,4 +104,4 @@ const TourShow = (props) => (
   </Show>
 );
 
-export default TourShow;
+export default BusShow;

@@ -17,14 +17,25 @@ const BusFilter = (props) => (
   <Filter {...props}>
     <TextInput label="Search" source="q" alwaysOn />
     <TextInput label="Name" source="name" defaultValue="" />
+    <TextInput label="From" source="from" defaultValue="" />
+    <TextInput label="To" source="to" defaultValue="" />
   </Filter>
 );
 
-const TourList = (props) => {
+const BusList = (props) => {
   return (
-    <List {...props} filters={<BusFilter />}>
-      <Datagrid rowClick="show">
+    <List
+      {...props}
+      filters={<BusFilter />}
+      sort={{ field: "createdAt", order: "DESC" }}
+    >
+      <Datagrid>
+        <DateField source="createdAt" />
         <BooleanField source="AC" />
+        <TextField source="name" />
+        <TextField source="model" />
+        <TextField source="from" />
+        <TextField source="to" />
         <DateField
           showTime
           options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
@@ -36,10 +47,6 @@ const TourList = (props) => {
           source="arrTime"
         />
         <NumberField source="seat" />
-        <TextField source="name" />
-        <TextField source="model" />
-        <TextField source="from" />
-        <TextField source="to" />
         <NumberField source="fare" />
         <TextField source="id" />
         <ShowButton />
@@ -50,4 +57,4 @@ const TourList = (props) => {
   );
 };
 
-export default TourList;
+export default BusList;

@@ -1,8 +1,8 @@
 import { Admin, Resource } from "react-admin";
-import TourList from "./components/Tours/TourList";
-import TourShow from "./components/Tours/TourShow";
-import TourEdit from "./components/Tours/TourEdit";
-import TourCreate from "./components/Tours/TourCreate";
+import BusList from "./components/Buses/BusList";
+import BusShow from "./components/Buses/BusShow";
+import BusEdit from "./components/Buses/BusEdit";
+import BusCreate from "./components/Buses/BusCreate";
 import authProvider from "./components/Auth/authProvider";
 import LoginPage from "./components/Layouts/LoginPage";
 import customRoutes from "./components/customRoutes";
@@ -45,10 +45,10 @@ const App = () => {
       >
         <Resource
           name="buses"
-          show={TourShow}
-          list={TourList}
-          edit={TourEdit}
-          create={TourCreate}
+          show={BusShow}
+          list={BusList}
+          edit={BusEdit}
+          create={BusCreate}
           icon={DirectionsBus}
         />
         <Resource name="users" list={UserList} edit={UserEdit} icon={People} />

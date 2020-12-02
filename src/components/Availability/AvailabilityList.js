@@ -6,11 +6,25 @@ import {
   DateField,
   NumberField,
   ReferenceField,
+  Filter,
+  TextInput,
   ShowButton,
 } from "react-admin";
 
+const AvailabilityFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="Search" source="q" alwaysOn />
+    <TextInput label="Bus Id" source="bus" defaultValue="" />
+    <TextInput label="Email" source="email" defaultValue="" />
+  </Filter>
+);
+
 const AvailabilityList = (props) => (
-  <List {...props}>
+  <List
+    {...props}
+    filters={<AvailabilityFilter />}
+    sort={{ field: "date", order: "DESC" }}
+  >
     <Datagrid>
       <TextField label="Bus Id" source="bus" />
       <ReferenceField label="Bus Name" source="bus" reference="buses">

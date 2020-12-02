@@ -10,7 +10,7 @@ import {
 } from "react-admin";
 import TimeInput from "../CustomInputs/TimeInput";
 
-const TourCreate = (props) => {
+const BusCreate = (props) => {
   return (
     <Create {...props}>
       <SimpleForm>
@@ -39,4 +39,4 @@ const TourCreate = (props) => {
   );
 };
 
-export default TourCreate;
+export default BusCreate;
