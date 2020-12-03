@@ -26,7 +26,7 @@ const ForgotPassword = ({ theme }) => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://localhost:4200/api/v1/users/forgotPassword",
+      url: "https://bus-api-sm.herokuapp.com/api/v1/users/forgotPassword",
       data: {
         email,
       },

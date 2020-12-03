@@ -30,7 +30,7 @@ const ResetPassword = ({ theme }) => {
     e.preventDefault();
     axios({
       method: "patch",
-      url: `http://localhost:4200/api/v1/users/resetPassword/${token}`,
+      url: `https://bus-api-sm.herokuapp.com/api/v1/users/resetPassword/${token}`,
       data: {
         password,
         passwordConfirm,

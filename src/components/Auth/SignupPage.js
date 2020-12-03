@@ -30,7 +30,7 @@ const SignupPage = ({ theme }) => {
     if (password !== passwordConfirm) {
       return alert("Password didn't match");
     }
-    fetch("http://localhost:4200/api/v1/users/signup", {
+    fetch("https://bus-api-sm.herokuapp.com/api/v1/users/signup", {
       method: "POST",
       body: JSON.stringify({ name, email, password, passwordConfirm }),
       headers: {
