@@ -38,7 +38,7 @@ const AvailabilityList = (props) => (
         options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
         source="time"
       />
-      <NumberField source="booked" />
+      <NumberField source="seatBooked" />
       <NumberField source="remaining" />
       <ShowButton />
     </Datagrid>

@@ -27,6 +27,7 @@ const BusCreate = (props) => {
             <TextInput label="Ending point" />
           </SimpleFormIterator>
         </ArrayInput>
+        <BooleanInput source="hasThreeInRow" />
         <NumberInput source="seat" />
         <TextInput source="name" />
         <TextInput source="model" />

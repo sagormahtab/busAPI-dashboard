@@ -11,6 +11,7 @@ import {
   ListButton,
   NumberField,
   BooleanField,
+  ReferenceField,
 } from "react-admin";
 import { Typography, Chip } from "@material-ui/core";
 
@@ -83,8 +84,16 @@ const BusShow = (props) => (
         <TextField source="model" />
         <TextField source="from" />
         <TextField source="to" />
-        <DateField source="depTime" />
-        <DateField source="arrTime" />
+        <DateField
+          showTime
+          options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
+          source="depTime"
+        />
+        <DateField
+          showTime
+          options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
+          source="arrTime"
+        />
         <NumberField source="fare" />
         <StartingPointsField source="startingPoints" />
         <EndingPointsField source="endingPoints" />
@@ -97,6 +106,13 @@ const BusShow = (props) => (
       </Tab>
 
       <Tab label="Miscellaneous">
+        <TextField label="Created By" source="user.name" />
+        <TextField label="User email" source="user.email" />
+        <ReferenceField label="User Id" source="user.id" reference="users">
+          <TextField source="id" />
+        </ReferenceField>
+        {/* <TextField source="users.name" />
+        <TextField source="users.email" /> */}
         <DateField source="createdAt" />
         <DateField source="updatedAt" />
       </Tab>

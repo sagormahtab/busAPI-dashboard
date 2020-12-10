@@ -39,7 +39,7 @@ const TourShow = (props) => (
         />
         <SeatsField label="Booked Seats" source="seats" />
         <NumberField source="totalSeat" />
-        <NumberField source="booked" />
+        <NumberField source="seatBooked" />
         <NumberField source="remaining" />
         <TextField source="id" />
       </Tab>

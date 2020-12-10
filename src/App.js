@@ -43,29 +43,38 @@ const App = () => {
         locale="en"
         i18nProvider={i18nProvider}
       >
-        <Resource
-          name="buses"
-          show={BusShow}
-          list={BusList}
-          edit={BusEdit}
-          create={BusCreate}
-          icon={DirectionsBus}
-        />
-        <Resource name="users" list={UserList} edit={UserEdit} icon={People} />
-        <Resource
-          name="bookings"
-          list={BookingList}
-          show={BookingShow}
-          edit={BookingEdit}
-          create={BookingCreate}
-        />
-        <Resource
-          name="availability"
-          options={{ label: "Availability" }}
-          list={AvailabilityList}
-          show={AvailabilityShow}
-          icon={CheckCircle}
-        />
+        {(permissions) => [
+          <Resource
+            name="buses"
+            show={BusShow}
+            list={BusList}
+            edit={BusEdit}
+            create={BusCreate}
+            icon={DirectionsBus}
+          />,
+          permissions === "admin" ? (
+            <Resource
+              name="users"
+              list={UserList}
+              edit={UserEdit}
+              icon={People}
+            />
+          ) : null,
+          <Resource
+            name="bookings"
+            list={BookingList}
+            show={BookingShow}
+            edit={BookingEdit}
+            create={BookingCreate}
+          />,
+          <Resource
+            name="availability"
+            options={{ label: "Availability" }}
+            list={AvailabilityList}
+            show={AvailabilityShow}
+            icon={CheckCircle}
+          />,
+        ]}
       </Admin>
     </>
   );
