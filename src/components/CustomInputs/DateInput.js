@@ -11,6 +11,8 @@ const BoundedTextField = (props) => {
     <DatePicker
       name={name}
       variant="inline"
+      disablePast
+      autoOk
       format="dd/MM/yyyy"
       label={props.label}
       onChange={onChange}

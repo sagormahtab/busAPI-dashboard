@@ -28,6 +28,7 @@ const BookingShow = (props) => (
       <SeatsField source="seats" />
       <TextField source="name" />
       <EmailField source="email" />
+      <TextField source="paymentId" />
       <NumberField source="price" />
       <DateField source="date" options={{ dateStyle: "full" }} />
       <DateField
