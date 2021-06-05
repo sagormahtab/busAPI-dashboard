@@ -13,11 +13,9 @@ import UserList from "./components/Users/UserList";
 import UserEdit from "./components/Users/UserEdit";
 import BookingList from "./components/Bookings/BookingList";
 // import dataProvider from "./components/dataProvider";
-import { People, DirectionsBus, CheckCircle } from "@material-ui/icons";
-import Dashboard from "./components/Layouts/Dashboard";
+import { People, DirectionsBus } from "@material-ui/icons";
+import Dashboard from "./components/Layouts/Dashboard/Dashboard";
 import extendedDataProvider from "./components/extendedDataProvider";
-import AvailabilityList from "./components/Availability/AvailabilityList";
-import AvailabilityShow from "./components/Availability/AvailabilityShow";
 import BookingShow from "./components/Bookings/BookingShow";
 import BookingEdit from "./components/Bookings/BookingEdit";
 import BookingCreate from "./components/Bookings/BookingCreate";
@@ -60,20 +58,15 @@ const App = () => {
               icon={People}
             />
           ) : null,
-          <Resource
-            name="bookings"
-            list={BookingList}
-            show={BookingShow}
-            edit={BookingEdit}
-            create={BookingCreate}
-          />,
-          <Resource
-            name="availability"
-            options={{ label: "Availability" }}
-            list={AvailabilityList}
-            show={AvailabilityShow}
-            icon={CheckCircle}
-          />,
+          ["admin", "operator"].includes(permissions) ? (
+            <Resource
+              name="bookings"
+              list={BookingList}
+              show={BookingShow}
+              edit={BookingEdit}
+              create={BookingCreate}
+            />
+          ) : null,
         ]}
       </Admin>
     </>

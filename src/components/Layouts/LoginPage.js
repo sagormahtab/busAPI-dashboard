@@ -12,19 +12,30 @@ import {
   Grid,
   Box,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 const LoginPage = ({ theme }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
   const login = useLogin();
   const notify = useNotify();
   const submit = (e) => {
     e.preventDefault();
-    login({ email, password }).catch(() => notify("Invalid email or password"));
+    setLoading(true);
+    login({ email, password }).catch((msg) => notify(`${msg}`));
+    setLoading(false);
+  };
+
+  const h1Style = {
+    color: "white",
+    marginTop: "0",
+    paddingTop: "1.5rem",
+    textAlign: "center",
   };
 
   return (
@@ -37,8 +48,14 @@ const LoginPage = ({ theme }) => {
         }}
       >
         <Container fixed>
+          <h1 style={h1Style}>
+            Welcome to <span style={{ color: "#30dd89" }}>Tickets4Travel</span>
+          </h1>
+          <h3 style={{ color: "white", textAlign: "center", marginTop: "0" }}>
+            Login to continue
+          </h3>
           <Grid container justify="center">
-            <Grid item xs={4} style={{ marginTop: "5rem" }}>
+            <Grid item xs={12} md={6} lg={4} style={{ marginTop: "3rem" }}>
               <Paper>
                 <Card>
                   <CardContent>
@@ -50,13 +67,8 @@ const LoginPage = ({ theme }) => {
                           type="email"
                           label="Email"
                           name="email"
-                          error={emailError ? true : false}
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          helperText={emailError ? "Required" : ""}
-                          onBlur={() =>
-                            email ? setEmailError(false) : setEmailError(true)
-                          }
                           style={{ width: "100%" }}
                         />
                       </div>
@@ -68,13 +80,6 @@ const LoginPage = ({ theme }) => {
                           name="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          error={passwordError ? true : false}
-                          helperText={passwordError ? "Required" : ""}
-                          onBlur={() =>
-                            email
-                              ? setPasswordError(false)
-                              : setPasswordError(true)
-                          }
                           style={{ width: "100%" }}
                         />
                       </div>
@@ -83,9 +88,10 @@ const LoginPage = ({ theme }) => {
                         variant="contained"
                         color="primary"
                         type="submit"
+                        disabled={loading}
                         style={{ width: "100%", marginTop: "1rem" }}
                       >
-                        Login
+                        {loading ? <CircularProgress size={23} /> : "Login"}
                       </Button>
                     </form>
                     <div
@@ -98,9 +104,9 @@ const LoginPage = ({ theme }) => {
                       <Link to="/find-account">
                         <small>Forgot Passwod?</small>
                       </Link>
-                      <Link to="/signup">
+                      <a href="/#/signup">
                         <small>Signup</small>
-                      </Link>
+                      </a>
                     </div>
                   </CardContent>
                 </Card>

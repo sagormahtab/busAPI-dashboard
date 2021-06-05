@@ -1,10 +1,13 @@
 const authProvider = {
   login: ({ email, password }) => {
-    const request = new Request("http://localhost:4200/api/v1/users/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: new Headers({ "Content-Type": "application/json" }),
-    });
+    const request = new Request(
+      "https://bus-api-sm.herokuapp.com/api/v1/users/login",
+      {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: new Headers({ "Content-Type": "application/json" }),
+      }
+    );
     return fetch(request)
       .then((response) => {
         if (response.status < 200 || response.status >= 300) {
@@ -24,7 +27,7 @@ const authProvider = {
     if (status === 401 || status === 403) {
       localStorage.removeItem("auth");
       return Promise.reject({
-        redirectTo: "http://localhost:4200/api/v1/users/login",
+        redirectTo: "https://bus-api-sm.herokuapp.com/api/v1/users/login",
       });
     }
     // other error code (404, 500, etc): no need to log out

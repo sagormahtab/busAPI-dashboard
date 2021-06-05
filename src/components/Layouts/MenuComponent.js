@@ -5,8 +5,10 @@ import { MenuItemLink, getResources } from "react-admin";
 import DefaultIcon from "@material-ui/icons/ViewList";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import { usePermissions } from "react-admin";
 
 const MenuComponent = ({ onMenuClick, logout }) => {
+  const { permissions } = usePermissions();
   const isXSmall = useMediaQuery((theme) => theme.breakpoints.down("xs"));
   const open = useSelector((state) => state.admin.ui.sidebarOpen);
   const resources = useSelector(getResources);
@@ -32,13 +34,15 @@ const MenuComponent = ({ onMenuClick, logout }) => {
           sidebarIsOpen={open}
         />
       ))}
-      <MenuItemLink
-        to="/custom-route"
-        primaryText="Availability"
-        leftIcon={<CheckCircleIcon />}
-        onClick={onMenuClick}
-        sidebarIsOpen={open}
-      />
+      {["admin", "operator"].includes(permissions) && (
+        <MenuItemLink
+          to="/availability"
+          primaryText="Availability"
+          leftIcon={<CheckCircleIcon />}
+          onClick={onMenuClick}
+          sidebarIsOpen={open}
+        />
+      )}
       {isXSmall && logout}
     </div>
   );

@@ -25,7 +25,7 @@ const SignupPage = ({ theme }) => {
   const notify = useNotify();
   const submit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:4200/api/v1/users/updateMe", {
+    fetch("https://bus-api-sm.herokuapp.com/api/v1/users/updateMe", {
       method: "PATCH",
       body: JSON.stringify({ name, email }),
       headers: {
@@ -57,7 +57,7 @@ const SignupPage = ({ theme }) => {
     }
     axios({
       method: "patch",
-      url: "http://localhost:4200/api/v1/users/updateMyPassword",
+      url: "https://bus-api-sm.herokuapp.com/api/v1/users/updateMyPassword",
       data: {
         passwordCurrent,
         password,
