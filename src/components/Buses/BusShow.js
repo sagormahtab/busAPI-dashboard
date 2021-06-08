@@ -14,6 +14,8 @@ import {
   ReferenceField,
 } from "react-admin";
 import { Typography, Chip } from "@material-ui/core";
+import ImagesField from "../CustomFields/ImagesField";
+import SeatsField from "../CustomFields/SeatsField";
 
 const BusTitle = ({ record }) => {
   return <span>Bus {record ? `"${record.name} ${record.model}"` : ""}</span>;
@@ -35,17 +37,6 @@ const Aside = () => (
     </Typography>
   </div>
 );
-
-const SeatsField = ({ record }) => (
-  <ul>
-    {record.seats.map((item) => (
-      <Chip key={item} label={item} style={{ marginRight: "0.3rem" }} />
-    ))}
-  </ul>
-);
-SeatsField.defaultProps = {
-  addLabel: true,
-};
 
 const StartingPointsField = ({ record }) => (
   <ul>
@@ -101,8 +92,11 @@ const BusShow = (props) => (
 
       <Tab label="Seat">
         <NumberField source="seat" />
-        <BooleanField source="hasThreeInRow" />
         <SeatsField source="seats" />
+      </Tab>
+
+      <Tab label="Images">
+        <ImagesField source="images" />
       </Tab>
 
       <Tab label="Miscellaneous">
@@ -111,8 +105,6 @@ const BusShow = (props) => (
         <ReferenceField label="User Id" source="user.id" reference="users">
           <TextField source="id" />
         </ReferenceField>
-        {/* <TextField source="users.name" />
-        <TextField source="users.email" /> */}
         <DateField source="createdAt" />
         <DateField source="updatedAt" />
       </Tab>

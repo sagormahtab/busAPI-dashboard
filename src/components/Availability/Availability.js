@@ -202,7 +202,7 @@ const Availability = () => {
               searchResult !== null && (
                 <Paper className={classes.paper}>
                   <h4>No Booking Found</h4>
-                  <p>The cabins are free to book</p>
+                  <p>The Seats are free to book</p>
                 </Paper>
               )
             )}

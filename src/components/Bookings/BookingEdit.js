@@ -17,7 +17,6 @@ const BookingEdit = (props) => {
     <Edit {...props}>
       <SimpleForm>
         <TextInput source="id" disabled />
-        {/* <TextInput source="seats" /> */}
         <ReferenceInput source="bus" reference="buses">
           <SelectInput optionText="id" />
         </ReferenceInput>

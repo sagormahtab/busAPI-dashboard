@@ -30,6 +30,11 @@ const BusEdit = (props) => {
     <Edit {...props} transform={transform}>
       <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
         <BooleanInput source="AC" />
+        <TextInput source="name" />
+        <TextInput source="model" />
+        <TextInput source="from" />
+        <TextInput source="to" />
+        <NumberInput source="fare" />
         <TimeInput name="depTime" label="Departure Time" source="depTime" />
         <TimeInput name="arrTime" label="Arrival Time" source="arrTime" />
         <ArrayInput source="startingPoints">
@@ -47,11 +52,6 @@ const BusEdit = (props) => {
             <SeatsInput source="seats" previouslySelected={formData.seats} />
           )}
         </FormDataConsumer>
-        <TextInput source="name" />
-        <TextInput source="model" />
-        <TextInput source="from" />
-        <TextInput source="to" />
-        <NumberInput source="fare" />
         <NumberInput source="dealPercent" />
         <ImageInput source="images" accept="image/*" multiple={true}>
           <PreviewImage source="src" />

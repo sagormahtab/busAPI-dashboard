@@ -33,7 +33,6 @@ const UserList = (props) => {
         <TextField source="name" />
         <EmailField source="email" />
         <TextField source="role" />
-        {/* <BooleanField source="active" /> */}
         <EditButton source="/users" />
         <DeleteButton source="/users" />
       </Datagrid>

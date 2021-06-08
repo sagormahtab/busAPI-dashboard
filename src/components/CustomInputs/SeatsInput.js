@@ -29,8 +29,9 @@ const RowPrinter = ({ theRow, seats, setSeats }) => {
       setSeats(filteredSeats);
       localStorage.setItem("seats", JSON.stringify(filteredSeats));
     } else {
-      setSeats([...seats, seat]);
-      localStorage.setItem("seats", JSON.stringify([...seats, seat]));
+      const updatedSeats = [...seats, seat];
+      setSeats(updatedSeats);
+      localStorage.setItem("seats", JSON.stringify(updatedSeats));
     }
   };
 
@@ -60,6 +61,7 @@ const SeatsInput = ({ previouslySelected }) => {
 
   if (previouslySelected && firstTime.current === true) {
     setSeats(previouslySelected);
+    localStorage.setItem("seats", JSON.stringify(previouslySelected));
     firstTime.current = false;
   }
   return (

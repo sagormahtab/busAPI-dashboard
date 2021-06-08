@@ -22,8 +22,6 @@ const BookingCreate = (props) => {
         <DateInput name="date" label="Date" source="date" />
         <TimeInput name="time" label="Time" source="time" />
         <TextInput source="startingPoint" label="Boarding Point" />
-        {/* <TextInput source="endingPoint" /> */}
-        {/* <TextInput source="seats" /> */}
         <ArrayInput source="seats">
           <SimpleFormIterator>
             <TextInput label="Seat" />

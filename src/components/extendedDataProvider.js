@@ -11,11 +11,11 @@ const httpClient = (url, options = {}) => {
 };
 
 const dataProvider = jsonServerProvider(
-  "http://localhost:4200/api/v1",
+  "https://bus-api-sm.herokuapp.com/api/v1",
   httpClient
 );
 
-const apiUrl = "http://localhost:4200/api/v1";
+const apiUrl = "https://bus-api-sm.herokuapp.com/api/v1";
 
 const extendedDataProvider = {
   ...dataProvider,
