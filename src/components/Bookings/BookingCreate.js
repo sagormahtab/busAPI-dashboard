@@ -33,7 +33,7 @@ const BookingCreate = (props) => {
         <TextInput source="name" />
         <TextInput source="email" />
         <TextInput source="phone" />
-        <NumberInput source="price" />
+        <NumberInput source="amount" />
       </SimpleForm>
     </Create>
   );

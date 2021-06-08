@@ -1,6 +1,5 @@
 import jsonServerProvider from "ra-data-json-server";
 import { fetchUtils } from "react-admin";
-import { stringify } from "query-string";
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -12,66 +11,76 @@ const httpClient = (url, options = {}) => {
 };
 
 const dataProvider = jsonServerProvider(
-  "https://bus-api-sm.herokuapp.com/api/v1",
+  "http://localhost:4200/api/v1",
   httpClient
 );
 
-const apiUrl = "https://bus-api-sm.herokuapp.com/api/v1";
+const apiUrl = "http://localhost:4200/api/v1";
 
 const extendedDataProvider = {
   ...dataProvider,
-  getList: (resource, params) => {
-    if (resource !== "availability") {
-      return dataProvider.getList(resource, params);
+  create: (resource, params) => {
+    if (!["buses"].includes(resource)) {
+      return dataProvider.create(resource, params);
     }
 
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
-    let query = {
-      ...fetchUtils.flattenObject(params.filter),
-      _sort: field,
-      _order: order,
-      _start: (page - 1) * perPage,
-      _end: page * perPage,
-    };
-    query = stringify(query);
-
-    const options = {};
-    if (!options.headers) {
-      options.headers = new Headers({ Accept: "application/json" });
+    let formData = new FormData();
+    for (const key of Object.keys(params.data)) {
+      if (key === "images") {
+        params.data[key].forEach((elm, i) => {
+          if (typeof elm === "string") {
+            formData.append("prevImg", elm);
+          } else {
+            formData.append(key, elm.rawFile);
+          }
+        });
+      } else {
+        formData.append(key, JSON.stringify(params.data[key]));
+      }
     }
-    const { token } = JSON.parse(localStorage.getItem("auth"));
-    options.headers.set("Authorization", `Bearer ${token}`);
 
-    return fetchUtils
-      .fetchJson(`${apiUrl}/${resource}?${query}`, options)
-      .then(({ headers, json }) => {
-        if (!headers.has("x-total-count")) {
-          throw new Error(
-            "The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?"
-          );
-        }
-        localStorage.setItem("avList", JSON.stringify(json));
-        return {
-          data: json,
-          total: parseInt(headers.get("x-total-count").split("/").pop(), 10),
-        };
-      });
+    return httpClient(`${apiUrl}/${resource}`, {
+      method: "POST",
+      body: formData,
+    }).then(({ json }) => {
+      return {
+        data: json,
+      };
+    });
   },
-  getOne: (resource, params) => {
-    if (resource !== "availability") {
-      // fallback to the default implementation
-      return dataProvider.getOne(resource, params);
+  update: (resource, params) => {
+    if (!["buses"].includes(resource)) {
+      return dataProvider.update(resource, params);
     }
 
-    const getAvList = (id) => {
-      return new Promise((resolve, reject) => {
-        const avList = JSON.parse(localStorage.getItem("avList"));
-        resolve(avList[id]);
-      });
-    };
+    let formData = new FormData();
+    let prevImages = [];
+    for (const key of Object.keys(params.data)) {
+      if (key === "images") {
+        params.data[key].forEach((elm, i) => {
+          if (typeof elm === "string") {
+            prevImages.push(elm);
+          } else {
+            formData.append(key, elm.rawFile);
+          }
+        });
+      } else {
+        formData.append(key, JSON.stringify(params.data[key]));
+      }
+    }
 
-    return getAvList(params.id).then((json) => ({ data: json }));
+    if (prevImages.length > 0) {
+      formData.append("prevImg", JSON.stringify(prevImages));
+    }
+
+    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+      method: "PUT",
+      body: formData,
+    }).then(({ json }) => {
+      return {
+        data: json,
+      };
+    });
   },
 };
 

@@ -7,14 +7,32 @@ import {
   Create,
   ArrayInput,
   SimpleFormIterator,
+  ImageInput,
 } from "react-admin";
 import TimeInput from "../CustomInputs/TimeInput";
+import PreviewImage from "../CustomFields/PreviewImage";
+import SeatsInput from "../CustomInputs/SeatsInput";
 
 const BusCreate = (props) => {
+  const transform = (data) => {
+    const seats = JSON.parse(localStorage.getItem("seats"));
+    localStorage.removeItem("seats");
+    return {
+      ...data,
+      seat: seats.length,
+      seats: seats,
+    };
+  };
+
   return (
-    <Create {...props}>
+    <Create {...props} transform={transform}>
       <SimpleForm>
         <BooleanInput source="AC" />
+        <TextInput source="name" />
+        <TextInput source="model" />
+        <TextInput source="from" />
+        <TextInput source="to" />
+        <NumberInput source="fare" />
         <TimeInput name="depTime" label="Departure Time" source="depTime" />
         <TimeInput name="arrTime" label="Arrival Time" source="arrTime" />
         <ArrayInput source="startingPoints">
@@ -27,13 +45,11 @@ const BusCreate = (props) => {
             <TextInput label="Ending point" />
           </SimpleFormIterator>
         </ArrayInput>
-        <BooleanInput source="hasThreeInRow" />
-        <NumberInput source="seat" />
-        <TextInput source="name" />
-        <TextInput source="model" />
-        <TextInput source="from" />
-        <TextInput source="to" />
-        <NumberInput source="fare" />
+        <SeatsInput />
+        <NumberInput source="dealPercent" />
+        <ImageInput source="images" accept="image/*" multiple={true}>
+          <PreviewImage source="src" />
+        </ImageInput>
         <TextInput source="id" disabled />
       </SimpleForm>
     </Create>

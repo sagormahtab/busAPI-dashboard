@@ -9,6 +9,7 @@ const BoundedTextField = (props) => {
   } = useInput(props);
   return (
     <TimePicker
+      autoOk
       variant="inline"
       name={name}
       label={props.label}

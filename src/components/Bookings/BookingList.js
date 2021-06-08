@@ -36,7 +36,7 @@ const BookingList = (props) => {
         </ReferenceField>
         <TextField source="name" />
         <EmailField source="email" />
-        <NumberField source="price" />
+        <NumberField source="amount" />
         <DateField source="date" />
         <DateField
           source="time"

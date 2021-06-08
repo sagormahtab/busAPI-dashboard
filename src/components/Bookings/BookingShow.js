@@ -29,7 +29,7 @@ const BookingShow = (props) => (
       <TextField source="name" />
       <EmailField source="email" />
       <TextField source="paymentId" />
-      <NumberField source="price" />
+      <NumberField source="amount" />
       <DateField source="date" options={{ dateStyle: "full" }} />
       <DateField
         source="time"

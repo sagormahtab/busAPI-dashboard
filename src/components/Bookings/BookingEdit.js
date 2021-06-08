@@ -32,7 +32,7 @@ const BookingEdit = (props) => {
         <TextInput source="endingPoint" />
         <TextInput source="name" />
         <TextInput source="email" />
-        <NumberInput source="price" />
+        <NumberInput source="amount" />
       </SimpleForm>
     </Edit>
   );
