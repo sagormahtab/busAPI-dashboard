@@ -1,22 +1,25 @@
 import React from "react";
 import {
-  List,
   Datagrid,
   TextField,
   EmailField,
   DateField,
   Filter,
+  BooleanField,
   TextInput,
+  ShowButton,
   EditButton,
   DeleteButton,
+  List,
 } from "react-admin";
 
 const UserFilter = (props) => (
   <Filter {...props}>
     <TextInput label="Search" source="q" alwaysOn />
-    <TextInput label="Name" source="name" defaultValue="" />
-    <TextInput label="Email" source="email" defaultValue="" />
-    <TextInput label="Role" source="role" defaultValue="" />
+    <TextInput label="Id" source="id" />
+    <TextInput label="Name" source="name" />
+    <TextInput label="Email" source="email" />
+    <TextInput label="Role" source="role" />
   </Filter>
 );
 
@@ -33,6 +36,8 @@ const UserList = (props) => {
         <TextField source="name" />
         <EmailField source="email" />
         <TextField source="role" />
+        <BooleanField source="confirmed" />
+        <ShowButton />
         <EditButton source="/users" />
         <DeleteButton source="/users" />
       </Datagrid>

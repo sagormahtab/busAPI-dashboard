@@ -15,6 +15,7 @@ const UserEdit = (props) => {
             { id: "admin", name: "admin" },
           ]}
         />
+        <TextInput source="documents" />
         <TextInput source="id" disabled />
       </SimpleForm>
     </Edit>

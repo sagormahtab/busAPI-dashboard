@@ -11,8 +11,8 @@ import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
 import UserList from "./components/Users/UserList";
 import UserEdit from "./components/Users/UserEdit";
+import UserShow from "./components/Users/UserShow";
 import BookingList from "./components/Bookings/BookingList";
-// import dataProvider from "./components/dataProvider";
 import { People, DirectionsBus } from "@material-ui/icons";
 import Dashboard from "./components/Layouts/Dashboard/Dashboard";
 import extendedDataProvider from "./components/extendedDataProvider";
@@ -54,6 +54,7 @@ const App = () => {
             <Resource
               name="users"
               list={UserList}
+              show={UserShow}
               edit={UserEdit}
               icon={People}
             />
