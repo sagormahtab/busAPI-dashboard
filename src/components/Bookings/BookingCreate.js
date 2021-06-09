@@ -7,6 +7,7 @@ import {
   ReferenceInput,
   SelectInput,
   ArrayInput,
+  BooleanInput,
   SimpleFormIterator,
 } from "react-admin";
 import TimeInput from "../CustomInputs/TimeInput";
@@ -32,6 +33,8 @@ const BookingCreate = (props) => {
         <TextInput source="email" />
         <TextInput source="phone" />
         <NumberInput source="amount" />
+        <BooleanInput source="isConfirmed" />
+        <TextInput source="specialNote" />
       </SimpleForm>
     </Create>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { Fragment } from "react";
 import {
   List,
   Datagrid,
@@ -13,6 +14,9 @@ import {
   DeleteButton,
   ShowButton,
 } from "react-admin";
+import DoneIcon from "@material-ui/icons/Done";
+import CloseIcon from "@material-ui/icons/Close";
+import ConfirmButton from "./ConfirmButton";
 
 const BookingFilter = (props) => (
   <Filter {...props}>
@@ -21,6 +25,20 @@ const BookingFilter = (props) => (
     <TextInput label="Email" source="email" defaultValue="" />
   </Filter>
 );
+
+const SpecialNoteField = ({ record }) => {
+  const specialNote = record.specialNote;
+  let hasSpecialNote = false;
+  if (specialNote && specialNote.length > 0) {
+    hasSpecialNote = true;
+  }
+
+  return <Fragment>{hasSpecialNote ? <DoneIcon /> : <CloseIcon />}</Fragment>;
+};
+
+SpecialNoteField.defaultProps = {
+  addLabel: true,
+};
 
 const BookingList = (props) => {
   return (
@@ -43,7 +61,9 @@ const BookingList = (props) => {
           showTime
           options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
         />
+        <SpecialNoteField source="specialNote" label="Note" />
         <TextField source="id" />
+        <ConfirmButton />
         <ShowButton />
         <EditButton source="/bookings" />
         <DeleteButton source="/bookings" />

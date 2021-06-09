@@ -12,6 +12,7 @@ import {
   NumberField,
 } from "react-admin";
 import SeatsField from "../CustomFields/SeatsField";
+import ConfirmButton from "./ConfirmButton";
 
 const BookingShowActions = ({ basePath, data, resource }) => (
   <TopToolbar>
@@ -39,6 +40,8 @@ const BookingShow = (props) => (
       <TextField source="startingPoint" />
       <TextField source="endingPoint" />
       <TextField source="bus" />
+      <TextField source="specialNote" />
+      <ConfirmButton />
       <DateField source="createdAt" />
     </SimpleShowLayout>
   </Show>

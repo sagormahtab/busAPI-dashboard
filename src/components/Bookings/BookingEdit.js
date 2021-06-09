@@ -7,6 +7,7 @@ import {
   NumberInput,
   SelectInput,
   ArrayInput,
+  BooleanInput,
   SimpleFormIterator,
 } from "react-admin";
 import DateInput from "../CustomInputs/DateInput";
@@ -32,6 +33,8 @@ const BookingEdit = (props) => {
         <TextInput source="name" />
         <TextInput source="email" />
         <NumberInput source="amount" />
+        <BooleanInput source="isConfirmed" />
+        <TextInput source="specialNote" />
       </SimpleForm>
     </Edit>
   );
