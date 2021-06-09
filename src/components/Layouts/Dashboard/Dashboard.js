@@ -27,6 +27,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!["user", undefined].includes(permissions)) {
+      console.log("Reached Here");
       axios
         .get("https://bus-api-sm.herokuapp.com/api/v1/bookings/booking-stats", {
           headers: authHeaders,
@@ -37,6 +38,7 @@ const Dashboard = () => {
         .catch((err) => {
           if (err.response) {
             if (err.response.data.status === "fail") {
+              alert(err.response.data.message);
               setShowContent(false);
             }
           } else if (err.request) {
@@ -137,9 +139,7 @@ const Dashboard = () => {
         )
       ) : (
         <CardContent>
-          <p>
-            Create a launch from the launches menu to get your dashboard stats!
-          </p>
+          <p>Create a bus from the buses menu to get your dashboard stats!</p>
         </CardContent>
       )}
     </Card>
