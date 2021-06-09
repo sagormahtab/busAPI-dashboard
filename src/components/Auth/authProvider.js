@@ -1,25 +1,24 @@
+import axios from "axios";
+
 const authProvider = {
   login: ({ email, password }) => {
-    const request = new Request(
-      "https://bus-api-sm.herokuapp.com/api/v1/users/login",
-      {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: new Headers({ "Content-Type": "application/json" }),
-      }
-    );
-    return fetch(request)
-      .then((response) => {
-        if (response.status < 200 || response.status >= 300) {
-          throw new Error(response.statusText);
+    const request = {
+      method: "post",
+      url: "https://bus-api-sm.herokuapp.com/api/v1/users/login",
+      data: { email, password },
+    };
+    return axios(request)
+      .then((res) => {
+        localStorage.setItem("auth", JSON.stringify(res.data));
+      })
+      .catch((error) => {
+        if (error.response) {
+          throw new Error(error.response.data.message);
+        } else if (error.request) {
+          throw new Error(error.request);
+        } else {
+          throw new Error("Network error");
         }
-        return response.json();
-      })
-      .then((auth) => {
-        localStorage.setItem("auth", JSON.stringify(auth));
-      })
-      .catch(() => {
-        throw new Error("Network error");
       });
   },
   checkError: (error) => {
@@ -27,7 +26,7 @@ const authProvider = {
     if (status === 401 || status === 403) {
       localStorage.removeItem("auth");
       return Promise.reject({
-        redirectTo: "https://bus-api-sm.herokuapp.com/api/v1/users/login",
+        redirectTo: "/login",
       });
     }
     // other error code (404, 500, etc): no need to log out
@@ -36,7 +35,7 @@ const authProvider = {
   checkAuth: () =>
     localStorage.getItem("auth")
       ? Promise.resolve()
-      : Promise.reject({ message: "login.required" }),
+      : Promise.reject({ message: "login required" }),
   logout: () => {
     localStorage.removeItem("auth");
     return Promise.resolve();
@@ -50,6 +49,13 @@ const authProvider = {
     }
   },
   getPermissions: () => {
+    const regexList = [/reset-password/, /confirm-user/];
+    const url = window.location.href;
+    if (["/signup", "/find-account"].includes(url.split("#")[1])) {
+      return;
+    } else if (regexList.some((rx) => rx.test(url))) {
+      return;
+    }
     const { role } = JSON.parse(localStorage.getItem("auth")).user;
     return role ? Promise.resolve(role) : Promise.reject();
   },

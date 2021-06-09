@@ -12,44 +12,56 @@ import {
   Grid,
   Box,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
 
 const SignupPage = ({ theme }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [busName, setBusName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const history = useHistory();
 
-  // const [role, setRole] = useState("");
-  // const login = useLogin();
+  const [dataLoading, setDataLoading] = useState(false);
+
   const notify = useNotify();
   const submit = (e) => {
     e.preventDefault();
+    setDataLoading(true);
     if (password !== passwordConfirm) {
       return alert("Password didn't match");
     }
-    fetch("https://bus-api-sm.herokuapp.com/api/v1/users/signup", {
-      method: "POST",
-      body: JSON.stringify({ name, email, password, passwordConfirm }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
+    axios({
+      method: "post",
+      url: "https://bus-api-sm.herokuapp.com/api/v1/users/signup",
+      data: {
+        name,
+        email,
+        phone,
+        busName,
+        password,
+        passwordConfirm,
       },
     })
-      .then((res) => {
-        if (res.status < 200 || res.status >= 300) {
-          throw new Error(res.statusText);
-        }
-        return res.json();
-      })
       .then((data) => {
-        notify("Successfully signed up. Log in to continue");
+        notify("Successfully signed up. Check your email to confirm");
         clearForm();
+        setDataLoading(false);
         history.push("/login");
       })
-      .catch((err) => {
-        alert("Error Occured");
+      .catch((error) => {
+        setDataLoading(false);
+        if (error.response) {
+          alert(error.response.data.message);
+        } else if (error.request) {
+          alert(error.request);
+        } else {
+          alert("Error", error.message);
+        }
       });
     // login({ email, password }).catch(() => notify("Invalid email or password"));
   };
@@ -59,6 +71,13 @@ const SignupPage = ({ theme }) => {
     setEmail("");
     setPassword("");
     setPasswordConfirm("");
+  };
+
+  const h1Style = {
+    color: "white",
+    marginTop: "0",
+    paddingTop: "1.5rem",
+    textAlign: "center",
   };
 
   return (
@@ -71,8 +90,14 @@ const SignupPage = ({ theme }) => {
         }}
       >
         <Container fixed>
+          <h1 style={h1Style}>
+            Welcome to <span style={{ color: "#30dd89" }}>Tickets4Travel</span>
+          </h1>
+          <h3 style={{ color: "white", textAlign: "center", marginTop: "0" }}>
+            Let's Signup!
+          </h3>
           <Grid container justify="center">
-            <Grid item xs={4} style={{ marginTop: "5rem" }}>
+            <Grid item xs={12} md={6} lg={4} style={{ marginTop: "3rem" }}>
               <Paper>
                 <Card>
                   <CardContent>
@@ -82,7 +107,7 @@ const SignupPage = ({ theme }) => {
                           required
                           autoFocus
                           type="text"
-                          label="name"
+                          label="Name"
                           name="name"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
@@ -103,6 +128,28 @@ const SignupPage = ({ theme }) => {
                       <div>
                         <TextField
                           required
+                          type="text"
+                          label="Phone"
+                          name="phone"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          style={{ width: "100%" }}
+                        />
+                      </div>
+                      <div>
+                        <TextField
+                          required
+                          type="text"
+                          label="Bus Name"
+                          name="busName"
+                          value={busName}
+                          onChange={(e) => setBusName(e.target.value)}
+                          style={{ width: "100%" }}
+                        />
+                      </div>
+                      <div>
+                        <TextField
+                          required
                           type="password"
                           label="Password"
                           name="password"
@@ -116,7 +163,7 @@ const SignupPage = ({ theme }) => {
                         <TextField
                           required
                           type="password"
-                          label="passwordConfirm"
+                          label="Confirm Password"
                           name="passwordConfirm"
                           value={passwordConfirm}
                           onChange={(e) => setPasswordConfirm(e.target.value)}
@@ -126,10 +173,15 @@ const SignupPage = ({ theme }) => {
                       <Button
                         variant="contained"
                         color="primary"
+                        disabled={dataLoading}
                         type="submit"
                         style={{ width: "100%", marginTop: "1rem" }}
                       >
-                        Sign Up
+                        {dataLoading ? (
+                          <CircularProgress size={23} />
+                        ) : (
+                          "Sign Up"
+                        )}
                       </Button>
                     </form>
                     <div

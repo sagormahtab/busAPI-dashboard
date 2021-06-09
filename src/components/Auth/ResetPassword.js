@@ -13,6 +13,7 @@ import {
   Grid,
   Box,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
@@ -20,6 +21,7 @@ import { useHistory, useParams } from "react-router-dom";
 const ResetPassword = ({ theme }) => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   let { token } = useParams();
 
@@ -28,6 +30,7 @@ const ResetPassword = ({ theme }) => {
   const notify = useNotify();
   const submit = (e) => {
     e.preventDefault();
+    setLoading(true);
     axios({
       method: "patch",
       url: `https://bus-api-sm.herokuapp.com/api/v1/users/resetPassword/${token}`,
@@ -39,9 +42,11 @@ const ResetPassword = ({ theme }) => {
       .then((data) => {
         notify("Password Reset successfully. Login to continue");
         clearForm();
+        setLoading(false);
         history.push("/login");
       })
       .catch((error) => {
+        setLoading(false);
         if (error.response) {
           alert(error.response.data.message);
         } else if (error.request) {
@@ -68,7 +73,7 @@ const ResetPassword = ({ theme }) => {
       >
         <Container fixed>
           <Grid container justify="center">
-            <Grid item xs={4} style={{ marginTop: "5rem" }}>
+            <Grid item xs={12} md={6} lg={4} style={{ marginTop: "5rem" }}>
               <Paper>
                 <Card>
                   <CardHeader
@@ -102,9 +107,10 @@ const ResetPassword = ({ theme }) => {
                         variant="contained"
                         color="primary"
                         type="submit"
+                        disabled={loading}
                         style={{ width: "100%", marginTop: "1rem" }}
                       >
-                        Reset
+                        {loading ? <CircularProgress size={23} /> : "Reset"}
                       </Button>
                     </form>
                   </CardContent>
