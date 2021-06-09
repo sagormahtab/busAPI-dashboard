@@ -1,4 +1,4 @@
-import React from "react";
+import React, { cloneElement } from "react";
 import {
   List,
   Datagrid,
@@ -11,6 +11,12 @@ import {
   ShowButton,
   Filter,
   TextInput,
+  useListContext,
+  TopToolbar,
+  sanitizeListRestProps,
+  CreateButton,
+  ExportButton,
+  usePermissions,
 } from "react-admin";
 
 const BusFilter = (props) => (
@@ -22,38 +28,82 @@ const BusFilter = (props) => (
   </Filter>
 );
 
-const BusList = (props) => {
+const BusListActions = (props) => {
+  const { className, permissions, exporter, filters, maxResults, ...rest } =
+    props;
+  const {
+    currentSort,
+    resource,
+    displayedFilters,
+    filterValues,
+    basePath,
+    showFilter,
+    total,
+  } = useListContext();
   return (
-    <List
-      {...props}
-      filters={<BusFilter />}
-      sort={{ field: "createdAt", order: "DESC" }}
-    >
-      <Datagrid>
-        <DateField source="createdAt" />
-        <BooleanField source="AC" />
-        <TextField source="name" />
-        <TextField source="model" />
-        <TextField source="from" />
-        <TextField source="to" />
-        <DateField
-          showTime
-          options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
-          source="depTime"
-        />
-        <DateField
-          showTime
-          options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
-          source="arrTime"
-        />
-        <NumberField source="seat" />
-        <NumberField source="fare" />
-        <TextField source="id" />
-        <ShowButton />
-        <EditButton source="/buses" />
-        <DeleteButton source="/buses" />
-      </Datagrid>
-    </List>
+    <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+      {filters &&
+        cloneElement(filters, {
+          resource,
+          showFilter,
+          displayedFilters,
+          filterValues,
+          context: "button",
+        })}
+      {permissions === "admin" && <CreateButton basePath={basePath} />}
+      <ExportButton
+        disabled={total === 0}
+        resource={resource}
+        sort={currentSort}
+        filterValues={filterValues}
+        maxResults={maxResults}
+      />
+    </TopToolbar>
+  );
+};
+
+const BusList = ({ permissions, ...props }) => {
+  const { loaded, permissions: permission } = usePermissions();
+  return (
+    loaded &&
+    (["admin", "operator"].includes(permission) ? (
+      <List
+        {...props}
+        filters={<BusFilter />}
+        actions={<BusListActions permissions={permissions} {...props} />}
+        sort={{ field: "createdAt", order: "DESC" }}
+      >
+        <Datagrid>
+          <DateField source="createdAt" />
+          <BooleanField source="AC" />
+          <TextField source="name" />
+          <TextField source="model" />
+          <TextField source="from" />
+          <TextField source="to" />
+          <DateField
+            showTime
+            options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
+            source="depTime"
+          />
+          <DateField
+            showTime
+            options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
+            source="arrTime"
+          />
+          <NumberField source="seat" />
+          <NumberField source="fare" />
+          <TextField source="id" />
+          <ShowButton />
+          <EditButton source="/buses" />
+          <DeleteButton source="/buses" />
+        </Datagrid>
+      </List>
+    ) : (
+      <div style={{ textAlign: "center", marginTop: "3rem" }}>
+        <h1>Fill up the form from the link on the dashboard</h1>
+        <p>After that you'll be able to add your bus informations here</p>
+      </div>
+    ))
   );
 };
 
