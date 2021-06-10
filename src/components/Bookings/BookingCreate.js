@@ -1,24 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SimpleForm,
   TextInput,
   NumberInput,
   Create,
   ReferenceInput,
-  SelectInput,
   ArrayInput,
   BooleanInput,
   SimpleFormIterator,
+  AutocompleteInput,
 } from "react-admin";
 import TimeInput from "../CustomInputs/TimeInput";
 import DateInput from "../CustomInputs/DateInput";
+import { FormSpy } from "react-final-form";
+import Aside from "./Aside";
 
 const BookingCreate = (props) => {
+  const [formValues, setFormValues] = useState();
   return (
-    <Create {...props}>
+    <Create {...props} aside={formValues && <Aside formValues={formValues} />}>
       <SimpleForm>
-        <ReferenceInput source="bus" reference="buses">
-          <SelectInput optionText="id" />
+        <ReferenceInput source="bus" reference="buses" perPage={100}>
+          <AutocompleteInput optionText="id" />
         </ReferenceInput>
         <DateInput name="date" label="Date" source="date" />
         <TimeInput name="time" label="Time" source="time" />
@@ -35,6 +38,14 @@ const BookingCreate = (props) => {
         <NumberInput source="amount" />
         <BooleanInput source="isConfirmed" />
         <TextInput source="specialNote" />
+        <FormSpy
+          subscription={{ values: true }}
+          onChange={(props) => {
+            if (props.values.bus) {
+              setFormValues(props.values);
+            }
+          }}
+        />
       </SimpleForm>
     </Create>
   );

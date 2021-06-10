@@ -91,7 +91,7 @@ const SignupPage = ({ theme }) => {
           // }
         } else if (error.request) {
           // The request was made but no response was received
-          alert(error.request);
+          alert(`${error}`);
         } else {
           // Something happened in setting up the request that triggered an Error
           alert("Error", error.message);

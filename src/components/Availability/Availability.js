@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { DatePicker, TimePicker } from "@material-ui/pickers";
 import { Chip } from "@material-ui/core";
+import Aside from "../Bookings/Aside";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -36,6 +37,7 @@ const Availability = () => {
 
   const [buses, setBuses] = useState(null);
   const [searchResult, setSearchResult] = useState(null);
+  const [showAside, setShowAside] = useState(false);
 
   const { token } = JSON.parse(localStorage.getItem("auth"));
 
@@ -59,12 +61,14 @@ const Availability = () => {
       )
       .then(function (response) {
         setSearchResult(response.data[0]);
+        setShowAside(false);
       })
       .catch(function (error) {
+        setShowAside(false);
         if (error.response) {
           alert(error.response.data.message);
         } else if (error.request) {
-          alert(error.request);
+          alert(`${error}`);
         } else {
           alert("Error", error.message);
         }
@@ -82,7 +86,7 @@ const Availability = () => {
         if (error.response) {
           alert(error.response.data.message);
         } else if (error.request) {
-          alert(error.request);
+          alert(`${error}`);
         } else {
           alert("Error", error.message);
         }
@@ -103,10 +107,18 @@ const Availability = () => {
                   id="bus-select"
                   options={buses ? buses : []}
                   noOptionsText="Loading"
-                  getOptionLabel={(launch) => launch.id}
+                  getOptionLabel={(bus) => bus.id}
                   getOptionSelected={(option, value) => option.id === value.id}
                   style={{ width: 300 }}
-                  onChange={(e, value) => setBus(value.id)}
+                  onChange={(e, value) => {
+                    if (value) {
+                      setBus(value.id);
+                      setShowAside(true);
+                    } else {
+                      setBus(null);
+                      setShowAside(false);
+                    }
+                  }}
                   renderInput={(params) => (
                     <TextField {...params} label="Bus" variant="outlined" />
                   )}
@@ -129,7 +141,7 @@ const Availability = () => {
                 value={time}
                 variant="inline"
                 autoOk
-                label="Time"
+                label="Departure Time"
                 onChange={setTime}
                 required={true}
               />
@@ -145,6 +157,11 @@ const Availability = () => {
               </Button>
             </form>
           </Grid>
+          {bus && showAside && (
+            <Grid item md={6}>
+              <Aside formValues={{ bus }} />
+            </Grid>
+          )}
           <Grid item md={6}>
             {searchResult ? (
               <Paper className={classes.paper}>
@@ -199,7 +216,9 @@ const Availability = () => {
                 </ul>
               </Paper>
             ) : (
-              searchResult !== null && (
+              bus &&
+              searchResult === undefined &&
+              !showAside && (
                 <Paper className={classes.paper}>
                   <h4>No Booking Found</h4>
                   <p>The Seats are free to book</p>

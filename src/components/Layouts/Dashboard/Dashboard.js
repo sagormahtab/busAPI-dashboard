@@ -27,7 +27,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!["user", undefined].includes(permissions)) {
-      console.log("Reached Here");
       axios
         .get("https://bus-api-sm.herokuapp.com/api/v1/bookings/booking-stats", {
           headers: authHeaders,
@@ -42,7 +41,7 @@ const Dashboard = () => {
               setShowContent(false);
             }
           } else if (err.request) {
-            alert(err.request);
+            alert(`${err}`);
           } else {
             alert("ERROR", err.message);
           }
@@ -128,11 +127,6 @@ const Dashboard = () => {
               </Grid>
               <Grid item lg={8} md={12} xl={9} xs={12}>
                 <WeeklyPlan weeklyPlan={stats && stats.weeklyPlan} />
-              </Grid>
-              <Grid item lg={4} md={6} xl={3} xs={12}>
-                <PopularReport
-                  totalBookings={stats && stats.monthlyPlan[0].bookings}
-                />
               </Grid>
             </Grid>
           </CardContent>

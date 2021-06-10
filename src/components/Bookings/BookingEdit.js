@@ -5,7 +5,7 @@ import {
   ReferenceInput,
   TextInput,
   NumberInput,
-  SelectInput,
+  AutocompleteInput,
   ArrayInput,
   BooleanInput,
   SimpleFormIterator,
@@ -18,8 +18,8 @@ const BookingEdit = (props) => {
     <Edit {...props}>
       <SimpleForm>
         <TextInput source="id" disabled />
-        <ReferenceInput source="bus" reference="buses">
-          <SelectInput optionText="id" />
+        <ReferenceInput source="bus" reference="buses" perPage={100}>
+          <AutocompleteInput optionText="id" />
         </ReferenceInput>
         <DateInput name="date" label="Date" source="date" />
         <TimeInput name="time" label="Time" source="time" />

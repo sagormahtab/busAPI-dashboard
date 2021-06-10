@@ -15,7 +15,7 @@ const authProvider = {
         if (error.response) {
           throw new Error(error.response.data.message);
         } else if (error.request) {
-          throw new Error(error.request);
+          throw new Error(`${error}`);
         } else {
           throw new Error("Network error");
         }

@@ -50,7 +50,7 @@ const BusListActions = (props) => {
           filterValues,
           context: "button",
         })}
-      {permissions === "admin" && <CreateButton basePath={basePath} />}
+      <CreateButton basePath={basePath} />
       <ExportButton
         disabled={total === 0}
         resource={resource}

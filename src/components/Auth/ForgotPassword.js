@@ -45,7 +45,7 @@ const ForgotPassword = ({ theme }) => {
         if (error.response) {
           alert(error.response.data.message);
         } else if (error.request) {
-          alert(error.request);
+          alert(`${error}`);
         } else {
           alert("Error", error.message);
         }
