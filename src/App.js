@@ -26,6 +26,7 @@ const messages = {
 
 const i18nProvider = polyglotI18nProvider((locale) => messages[locale], "en", {
   allowMissing: true,
+  onMissingKey: (key, _, __) => key,
 });
 
 const App = () => {
