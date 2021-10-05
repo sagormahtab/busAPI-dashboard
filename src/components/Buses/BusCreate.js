@@ -7,14 +7,10 @@ import {
   Create,
   ImageInput,
   RadioButtonGroupInput,
-  AutocompleteArrayInput,
-  useNotify,
 } from "react-admin";
 import PreviewImage from "../CustomFields/PreviewImage";
 import SeatsInput from "../CustomInputs/SeatsInput";
-import useFetchLocation from "../../hooks/useFetchLocation";
 import Trips from "./Trips";
-import { T4T_SERVER_BASE_URL } from "../../constants";
 
 const busClassChoice = [
   { id: "Business", name: "Business" },
@@ -23,15 +19,6 @@ const busClassChoice = [
 ];
 
 const BusCreate = ({ permissions, ...props }) => {
-  const notify = useNotify();
-  const { locations, error } = useFetchLocation(
-    `${T4T_SERVER_BASE_URL}/api/v1/locations`
-  );
-
-  if (error) {
-    notify("An error occurred while fetching locations");
-  }
-
   const transform = (data) => {
     data.stoppages = data.stoppages.map((stp) => JSON.parse(stp));
     data.trips = data.trips.map((trp) => {
@@ -63,14 +50,6 @@ const BusCreate = ({ permissions, ...props }) => {
         <TextInput source="model" />
         <BooleanInput source="AC" />
         <RadioButtonGroupInput source="busClass" choices={busClassChoice} />
-        {locations ? (
-          <AutocompleteArrayInput source="stoppages" choices={locations} />
-        ) : (
-          <AutocompleteArrayInput
-            source="stoppages"
-            choices={[{ name: "Loading" }]}
-          />
-        )}
         <Trips source="trips" />
         <NumberInput source="seatsInOneRow" />
         <SeatsInput />

@@ -6,46 +6,53 @@ import {
   SelectInput,
   TextInput,
   AutocompleteArrayInput,
+  useNotify,
 } from "react-admin";
 import TimeInput from "../CustomInputs/TimeInput";
-import { useFormState } from "react-final-form";
+import { T4T_SERVER_BASE_URL } from "../../constants";
+import useFetch from "../../hooks/useFetch";
+import repeatIcon from "../../data/images/repeat-icon.png";
 
 const Trips = (props) => {
-  const { values } = useFormState();
+  const notify = useNotify();
+  const { data: locations, error } = useFetch(
+    `${T4T_SERVER_BASE_URL}/api/v1/locations`
+  );
 
-  const locationChoice = (locations) =>
-    locations.map((loc) => {
-      const parsedLoc = JSON.parse(loc);
-      return { id: loc, name: parsedLoc.locName };
+  if (error) {
+    notify("An error occurred while fetching locations");
+  }
+
+  const locationChoice = (locs) =>
+    locs.map((loc) => {
+      return { id: loc.locId, name: loc.locName };
     });
 
-  const locationChoiceForAutocomplete = (locations) =>
-    locations.map((loc) => {
-      const parsedLoc = JSON.parse(loc);
-      return { id: parsedLoc.locName, name: parsedLoc.locName };
+  const locationChoiceForAutocomplete = (locs) =>
+    locs.map((loc) => {
+      return { id: loc.locName, name: loc.locName };
     });
 
   return (
     <ArrayInput {...props}>
-      <SimpleFormIterator {...props}>
+      <SimpleFormIterator
+        addButton={<img src={repeatIcon} alt="" />}
+        {...props}
+      >
         <SelectInput
           source="startingPoint"
           label="Starting Point"
-          choices={values.stoppages ? locationChoice(values.stoppages) : []}
+          choices={locations ? locationChoice(locations) : []}
         />
         <SelectInput
           source="endingPoint"
           label="Ending Point"
-          choices={values.stoppages ? locationChoice(values.stoppages) : []}
+          choices={locations ? locationChoice(locations) : []}
         />
         <AutocompleteArrayInput
           source="route"
           label="Route"
-          choices={
-            values.stoppages
-              ? locationChoiceForAutocomplete(values.stoppages)
-              : []
-          }
+          choices={locations ? locationChoiceForAutocomplete(locations) : []}
         />
         <NumberInput source="fare" label="Fare" />
         <TimeInput label="Departure Time" source="depTime" />
