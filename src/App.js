@@ -1,3 +1,4 @@
+import "./App.css";
 import { Admin, Resource } from "react-admin";
 import BusList from "./components/Buses/BusList";
 import BusShow from "./components/Buses/BusShow";

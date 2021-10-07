@@ -17,6 +17,8 @@ import {
   CreateButton,
   ExportButton,
   usePermissions,
+  SingleFieldList,
+  ChipField,
 } from "react-admin";
 
 const BusFilter = (props) => (
@@ -62,6 +64,12 @@ const BusListActions = (props) => {
   );
 };
 
+// const ArrayList = (fieldName) => {
+//   return (<>
+
+//   </>)
+// }
+
 const BusList = ({ permissions, ...props }) => {
   const { loaded, permissions: permission } = usePermissions();
   return (
@@ -78,8 +86,11 @@ const BusList = ({ permissions, ...props }) => {
           <BooleanField source="AC" />
           <TextField source="name" />
           <TextField source="model" />
-          <TextField source="from" />
-          <TextField source="to" />
+          <SingleFieldList>
+            <ChipField source="startingPoint" />
+            {/* <TextField source="trips[0].startingPoint" /> */}
+            {/* <TextField source="trips[1].startingPoint" /> */}
+          </SingleFieldList>
           <DateField
             showTime
             options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}

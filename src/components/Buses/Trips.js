@@ -12,9 +12,12 @@ import TimeInput from "../CustomInputs/TimeInput";
 import { T4T_SERVER_BASE_URL } from "../../constants";
 import useFetch from "../../hooks/useFetch";
 import repeatIcon from "../../data/images/repeat-icon.png";
+import { useFormState } from "react-final-form";
 
 const Trips = (props) => {
   const notify = useNotify();
+  const { values } = useFormState();
+
   const { data: locations, error } = useFetch(
     `${T4T_SERVER_BASE_URL}/api/v1/locations`
   );
@@ -33,12 +36,33 @@ const Trips = (props) => {
       return { id: loc.locName, name: loc.locName };
     });
 
+  const RepeatIconComp = (props) => {
+    return (
+      <div {...props} className="repeatIconComp">
+        <img style={{ width: "32px" }} src={repeatIcon} alt="" />
+        ADD RETURN
+      </div>
+    );
+  };
+
+  const generateFormIterator = (props) => {
+    let formIteratorProps = {};
+    if (values.trips && values.trips.length === 1) {
+      formIteratorProps = {
+        addButton: <RepeatIconComp {...props} />,
+      };
+    }
+
+    if (values.trips && values.trips.length === 2) {
+      formIteratorProps.addButton = false;
+    }
+
+    return formIteratorProps;
+  };
+
   return (
     <ArrayInput {...props}>
-      <SimpleFormIterator
-        addButton={<img src={repeatIcon} alt="" />}
-        {...props}
-      >
+      <SimpleFormIterator {...generateFormIterator(props)} {...props}>
         <SelectInput
           source="startingPoint"
           label="Starting Point"

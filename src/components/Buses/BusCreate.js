@@ -20,20 +20,6 @@ const busClassChoice = [
 
 const BusCreate = ({ permissions, ...props }) => {
   const transform = (data) => {
-    data.stoppages = data.stoppages.map((stp) => JSON.parse(stp));
-    data.trips = data.trips.map((trp) => {
-      const parsedLocStrt = JSON.parse(trp.startingPoint);
-      const parsedLocEnd = JSON.parse(trp.endingPoint);
-      trp.startingPoint = {};
-      trp.endingPoint = {};
-
-      trp.startingPoint.locId = parsedLocStrt.locId;
-      trp.startingPoint.locName = parsedLocStrt.locName;
-      trp.endingPoint.locId = parsedLocEnd.locId;
-      trp.endingPoint.locName = parsedLocEnd.locName;
-      return trp;
-    });
-
     const seats = JSON.parse(localStorage.getItem("seats"));
     localStorage.removeItem("seats");
     return {
