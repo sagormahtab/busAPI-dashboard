@@ -17,9 +17,12 @@ import {
   CreateButton,
   ExportButton,
   usePermissions,
-  SingleFieldList,
-  ChipField,
+  ReferenceField,
 } from "react-admin";
+import DepTime from "./Show/DepTime";
+import ArrTime from "./Show/ArrTime";
+import StartingPoint from "./Show/StartingPoint";
+import EndingPoint from "./Show/EndingPoint";
 
 const BusFilter = (props) => (
   <Filter {...props}>
@@ -86,21 +89,18 @@ const BusList = ({ permissions, ...props }) => {
           <BooleanField source="AC" />
           <TextField source="name" />
           <TextField source="model" />
-          <SingleFieldList>
-            <ChipField source="startingPoint" />
-            {/* <TextField source="trips[0].startingPoint" /> */}
-            {/* <TextField source="trips[1].startingPoint" /> */}
-          </SingleFieldList>
-          <DateField
-            showTime
-            options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
-            source="depTime"
-          />
-          <DateField
-            showTime
-            options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
-            source="arrTime"
-          />
+          <StartingPoint source="trips" />
+          {/* <ReferenceField
+            label="Starting Point"
+            source="trips[0].startingPoint"
+            reference="cities/admin"
+            link={false}
+          >
+            <TextField source="locName" />
+          </ReferenceField> */}
+          <EndingPoint source="endingPoint" />
+          <DepTime source="depTime" />
+          <ArrTime source="arrTime" />
           <NumberField source="seat" />
           <NumberField source="fare" />
           <TextField source="id" />

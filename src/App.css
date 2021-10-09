@@ -1,7 +1,9 @@
 .repeatIconComp {
   display: flex;
   align-items: center;
+  padding: 0 5px;
 }
 .repeatIconComp:hover {
   cursor: pointer;
+  background-color: #f5f5f5;
 }

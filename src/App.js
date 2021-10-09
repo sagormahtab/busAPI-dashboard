@@ -70,6 +70,7 @@ const App = () => {
               create={BookingCreate}
             />
           ) : null,
+          <Resource name="cities/admin" />,
         ]}
       </Admin>
     </>
