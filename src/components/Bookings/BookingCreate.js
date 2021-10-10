@@ -23,8 +23,8 @@ const BookingCreate = (props) => {
         <ReferenceInput source="bus" reference="buses" perPage={100}>
           <AutocompleteInput optionText="id" />
         </ReferenceInput>
-        <DateInput name="date" label="Date" source="date" />
-        <TimeInput name="time" label="Time" source="time" />
+        <DateInput name="depDate" label="Dep Date" source="depDate" />
+        <TimeInput name="depTime" label="Dep Time" source="depTime" />
         <TextInput source="startingPoint" label="Boarding Point" />
         <ArrayInput source="seats">
           <SimpleFormIterator>

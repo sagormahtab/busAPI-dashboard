@@ -1,12 +1,11 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import get from "lodash/get";
 import { useRecordContext } from "react-admin";
 import repeatIcon from "../../../data/images/repeat-icon.png";
+import { ReferenceField, TextField } from "react-admin";
 
 const EndingPoint = (props) => {
-  const source = "trips";
-  const { record } = useRecordContext(props);
+  const { record, basePath } = useRecordContext(props);
 
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
@@ -14,10 +13,28 @@ const EndingPoint = (props) => {
         <img style={{ width: "32px" }} src={repeatIcon} alt="" />
       )}
       <div>
-        <span>{get(record, `${source}[0].endingPoint`)}</span>
+        {record.trips[0]?.endingPoint && (
+          <ReferenceField
+            basePath={basePath}
+            record={record}
+            source="trips[0].endingPoint"
+            reference="cities/admin"
+            link={false}
+          >
+            <TextField source="locName" />
+          </ReferenceField>
+        )}
         <br />
         {record.trips[1]?.endingPoint && (
-          <span>{get(record, `${source}[1].endingPoint`)}</span>
+          <ReferenceField
+            basePath={basePath}
+            record={record}
+            source="trips[1].endingPoint"
+            reference="cities/admin"
+            link={false}
+          >
+            <TextField source="locName" />
+          </ReferenceField>
         )}
       </div>
     </div>
@@ -26,6 +43,7 @@ const EndingPoint = (props) => {
 
 EndingPoint.propTypes = {
   label: PropTypes.string,
+  addLabel: true,
   record: PropTypes.object,
   source: PropTypes.string.isRequired,
 };

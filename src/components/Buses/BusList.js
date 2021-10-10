@@ -17,12 +17,12 @@ import {
   CreateButton,
   ExportButton,
   usePermissions,
-  ReferenceField,
 } from "react-admin";
 import DepTime from "./Show/DepTime";
 import ArrTime from "./Show/ArrTime";
 import StartingPoint from "./Show/StartingPoint";
 import EndingPoint from "./Show/EndingPoint";
+import FareField from "./Show/FareField";
 
 const BusFilter = (props) => (
   <Filter {...props}>
@@ -89,20 +89,12 @@ const BusList = ({ permissions, ...props }) => {
           <BooleanField source="AC" />
           <TextField source="name" />
           <TextField source="model" />
-          <StartingPoint source="trips" />
-          {/* <ReferenceField
-            label="Starting Point"
-            source="trips[0].startingPoint"
-            reference="cities/admin"
-            link={false}
-          >
-            <TextField source="locName" />
-          </ReferenceField> */}
-          <EndingPoint source="endingPoint" />
-          <DepTime source="depTime" />
-          <ArrTime source="arrTime" />
-          <NumberField source="seat" />
-          <NumberField source="fare" />
+          <StartingPoint source="trips" label="Starting Point" />
+          <EndingPoint source="trips" label="Ending Point" />
+          <DepTime source="trips" label="Dep Time" />
+          <ArrTime source="trips" label="Arr Time" />
+          <FareField source="fare" />
+          <NumberField source="numOfSeats" label="Total Seat" />
           <TextField source="id" />
           <ShowButton />
           <EditButton source="/buses" />

@@ -21,8 +21,8 @@ const BookingEdit = (props) => {
         <ReferenceInput source="bus" reference="buses" perPage={100}>
           <AutocompleteInput optionText="id" />
         </ReferenceInput>
-        <DateInput name="date" label="Date" source="date" />
-        <TimeInput name="time" label="Time" source="time" />
+        <DateInput name="depDate" label="Dep Date" source="depDate" />
+        <TimeInput name="depTime" label="Dep Time" source="depTime" />
         <ArrayInput source="seats">
           <SimpleFormIterator>
             <TextInput label="Seat" />

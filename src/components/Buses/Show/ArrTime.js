@@ -31,6 +31,7 @@ const ArrTime = (props) => {
 
 ArrTime.propTypes = {
   label: PropTypes.string,
+  addLabel: true,
   record: PropTypes.object,
   source: PropTypes.string.isRequired,
 };

@@ -55,9 +55,9 @@ const BookingList = (props) => {
         <TextField source="name" />
         <EmailField source="email" />
         <NumberField source="amount" />
-        <DateField source="date" />
+        <DateField source="depDate" />
         <DateField
-          source="time"
+          source="depTime"
           showTime
           options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
         />

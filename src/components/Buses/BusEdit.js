@@ -8,6 +8,7 @@ import {
   ImageInput,
   Toolbar,
   RadioButtonGroupInput,
+  FormDataConsumer,
 } from "react-admin";
 import PreviewImage from "../CustomFields/PreviewImage";
 import SeatsInput from "../CustomInputs/SeatsInput";
@@ -39,7 +40,11 @@ const BusEdit = ({ permissions, ...props }) => {
         <RadioButtonGroupInput source="busClass" choices={busClassChoice} />
         <Trips source="trips" />
         <NumberInput source="seatsInOneRow" />
-        <SeatsInput />
+        <FormDataConsumer>
+          {({ formData, ...rest }) => (
+            <SeatsInput source="seats" previouslySelected={formData.seats} />
+          )}
+        </FormDataConsumer>
         <ImageInput source="images" accept="image/*" multiple={true}>
           <PreviewImage source="src" />
         </ImageInput>

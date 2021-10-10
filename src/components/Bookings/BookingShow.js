@@ -10,6 +10,7 @@ import {
   DeleteButton,
   ListButton,
   NumberField,
+  ReferenceField,
 } from "react-admin";
 import SeatsField from "../CustomFields/SeatsField";
 import ConfirmButton from "./ConfirmButton";
@@ -31,14 +32,33 @@ const BookingShow = (props) => (
       <EmailField source="email" />
       <TextField source="paymentId" />
       <NumberField source="amount" />
-      <DateField source="date" options={{ dateStyle: "full" }} />
+      <DateField source="depDate" options={{ dateStyle: "full" }} />
       <DateField
-        source="time"
+        source="depTime"
         showTime
         options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
       />
-      <TextField source="startingPoint" />
-      <TextField source="endingPoint" />
+      <DateField
+        source="arrTime"
+        showTime
+        options={{ hour12: true, hour: "2-digit", minute: "2-digit" }}
+      />
+      <ReferenceField
+        label="Starting Point"
+        source="startingPoint"
+        reference="cities/admin"
+        link={false}
+      >
+        <TextField source="locName" />
+      </ReferenceField>
+      <ReferenceField
+        label="Ending Point"
+        source="endingPoint"
+        reference="cities/admin"
+        link={false}
+      >
+        <TextField source="locName" />
+      </ReferenceField>
       <TextField source="bus" />
       <TextField source="specialNote" />
       <ConfirmButton />
