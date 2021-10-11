@@ -1,8 +1,6 @@
 import jsonServerProvider from "ra-data-json-server";
 import { fetchUtils } from "react-admin";
-
-// const LOCAL_SERVER = "http://localhost:4200";
-const LIVE_SERVER = "https://bus-api-sm.herokuapp.com";
+import { BUS_API_SERVER } from "../constants/index";
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -13,9 +11,9 @@ const httpClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-const dataProvider = jsonServerProvider(`${LIVE_SERVER}/api/v1`, httpClient);
+const dataProvider = jsonServerProvider(`${BUS_API_SERVER}/api/v1`, httpClient);
 
-const apiUrl = `${LIVE_SERVER}/api/v1`;
+const apiUrl = `${BUS_API_SERVER}/api/v1`;
 
 const extendedDataProvider = {
   ...dataProvider,
