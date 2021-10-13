@@ -21,49 +21,54 @@ const BookingEdit = (props) => {
   const [formValues, setFormValues] = useState(null);
   const [boardingPoints, setBoardingPoints] = useState([]);
   const [droppingPoints, setDroppingPoints] = useState([]);
+  const [bus, setBus] = useState(null);
+  const [startingPoint, setStartingPoint] = useState(null);
+  const [endingPoint, setEndingPoint] = useState(null);
+  const [locationIds, setLocationIds] = useState(null);
   const [locations, setLocations] = useState(null);
 
   useEffect(() => {
     (async function () {
-      if (formValues) {
+      if (formValues && formValues.bus !== bus?.id) {
         // getting the bus
         const { token } = JSON.parse(localStorage.getItem("auth"));
         const headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         };
+
         const res = await axios.get(
           `${BUS_API_SERVER}/api/v1/buses/${formValues.bus}`,
           { headers }
         );
 
-        // setting location ids and boarding, dropping points
-        const locationIds = [];
-        res.data.trips.forEach((trp, i) => {
-          if (trp.startingPoint && trp.endingPoint) {
-            locationIds.push(trp.startingPoint);
-            locationIds.push(trp.endingPoint);
-          }
+        setLocationIds([
+          res.data.trips[0].startingPoint,
+          res.data.trips[0].endingPoint,
+        ]);
+        setBus(res.data);
+      }
+    })();
+  }, [formValues, bus]);
 
-          if (
-            formValues.startingPoint === trp.startingPoint &&
-            formValues.endingPoint === trp.endingPoint
-          ) {
-            const internalBoardingPoints = [];
-            const internalDroppingPoints = [];
-            trp.boardingPoints.forEach((bp) => {
-              internalBoardingPoints.push({ id: bp, name: bp });
-            });
-            setBoardingPoints(internalBoardingPoints);
+  useEffect(() => {
+    if (!formValues) {
+      return;
+    }
+    if (
+      formValues &&
+      formValues.startingPoint === startingPoint &&
+      formValues.endingPoint === endingPoint
+    ) {
+      return;
+    }
+    setStartingPoint(formValues.startingPoint);
+    setEndingPoint(formValues.endingPoint);
+  }, [formValues, startingPoint, endingPoint]);
 
-            trp.droppingPoints.forEach((bp) => {
-              internalDroppingPoints.push({ id: bp, name: bp });
-            });
-            setDroppingPoints(internalDroppingPoints);
-          }
-        });
-
-        // calling cities api
+  useEffect(() => {
+    (async function () {
+      if (locationIds) {
         let queryString = "";
         locationIds.forEach((id, i) => {
           if (!queryString) {
@@ -72,15 +77,46 @@ const BookingEdit = (props) => {
             queryString += `&id=${id}`;
           }
         });
-        const res2 = await axios.get(
+
+        const { token } = JSON.parse(localStorage.getItem("auth"));
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+
+        const res = await axios.get(
           `${BUS_API_SERVER}/api/v1/cities/admin?${queryString}`,
           { headers }
         );
 
-        setLocations(res2.data);
+        setLocations(res.data);
       }
     })();
-  }, [formValues]);
+  }, [locationIds]);
+
+  useEffect(() => {
+    if (bus) {
+      // setting location ids and boarding, dropping points
+      bus.trips.forEach((trp, i) => {
+        if (
+          startingPoint === trp.startingPoint &&
+          endingPoint === trp.endingPoint
+        ) {
+          const internalBoardingPoints = [];
+          const internalDroppingPoints = [];
+          trp.boardingPoints.forEach((bp) => {
+            internalBoardingPoints.push({ id: bp, name: bp });
+          });
+          setBoardingPoints(internalBoardingPoints);
+
+          trp.droppingPoints.forEach((dp) => {
+            internalDroppingPoints.push({ id: dp, name: dp });
+          });
+          setDroppingPoints(internalDroppingPoints);
+        }
+      });
+    }
+  }, [bus, endingPoint, startingPoint]);
 
   return (
     <Edit {...props}>
@@ -89,8 +125,6 @@ const BookingEdit = (props) => {
         <ReferenceInput source="bus" reference="buses" perPage={100}>
           <AutocompleteInput optionText="id" />
         </ReferenceInput>
-        <DateInput name="depDate" label="Dep Date" source="depDate" />
-        <TimeInput name="depTime" label="Dep Time" source="depTime" />
         <ArrayInput source="seats">
           <SimpleFormIterator>
             <TextInput label="Seat" />
@@ -110,6 +144,9 @@ const BookingEdit = (props) => {
           optionText="locName"
           optionValue="locId"
         />
+        <DateInput name="depDate" label="Dep Date" source="depDate" />
+        <TimeInput name="depTime" label="Dep Time" source="depTime" />
+        <TimeInput name="arrTime" label="Arr Time" source="arrTime" />
         <SelectInput
           source="boardingPoint"
           choices={boardingPoints ? boardingPoints : [{ locName: "Loading" }]}
@@ -120,7 +157,9 @@ const BookingEdit = (props) => {
         />
         <TextInput source="name" />
         <TextInput source="email" />
+        <TextInput source="phone" />
         <NumberInput source="amount" />
+        <TextInput source="paymentGateway" />
         <TextInput source="paymentId" />
         <BooleanInput source="isConfirmed" />
         <BooleanInput source="isPaymentDone" />

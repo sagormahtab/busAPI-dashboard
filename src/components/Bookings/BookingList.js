@@ -29,7 +29,10 @@ const BookingFilter = (props) => (
 const SpecialNoteField = ({ record }) => {
   const specialNote = record.specialNote;
   let hasSpecialNote = false;
-  if (specialNote && specialNote.length > 0) {
+
+  if (!specialNote) {
+    hasSpecialNote = false;
+  } else if (specialNote && specialNote.length > 0) {
     hasSpecialNote = true;
   }
 

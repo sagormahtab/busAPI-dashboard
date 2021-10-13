@@ -47,6 +47,7 @@ const Trips = (props) => {
 
   const generateFormIterator = (props) => {
     let formIteratorProps = {};
+
     if (values.trips && values.trips.length === 1) {
       formIteratorProps = {
         addButton: <RepeatIconComp {...props} />,
@@ -54,7 +55,7 @@ const Trips = (props) => {
     }
 
     if (values.trips && values.trips.length === 2) {
-      formIteratorProps.addButton = false;
+      formIteratorProps.disableAdd = true;
     }
 
     return formIteratorProps;
